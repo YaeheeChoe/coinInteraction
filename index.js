@@ -31,7 +31,7 @@ class Coin {
     this.id = id;
     this.x = mouse.x;
     this.y = mouse.y;
-    this.elasticity = -10;
+    this.elasticity = -1;
     this.forceX = 0;
     this.forceY = gravity;
     this.m = 15;
@@ -63,7 +63,8 @@ class Coin {
         (this.x - coinPool[i].x) * (this.x - coinPool[i].x) +
           (this.y - coinPool[i].y) * (this.y - coinPool[i].y)
       ) {
-        console.log("colide");
+        this.forceX = this.x - coinPool[i].x;
+        this.forceY = this.y - coinPool[i].y;
       }
     }
   }
