@@ -31,11 +31,11 @@ class Coin {
     this.id = id;
     this.x = mouse.x;
     this.y = mouse.y;
-    this.elasticity = -2;
+    this.elasticity = -10;
     this.forceX = 0;
     this.forceY = gravity;
     this.m = 15;
-    this.size = 15;
+    this.size = 50;
     this.color = "blue";
   }
   draw() {
@@ -59,13 +59,11 @@ class Coin {
         continue;
       }
       if (
-        this.y < coinPool[i].y + this.size &&
-        this.y > coinPool[i].y - this.size &&
-        this.x < coinPool[i].x + this.size &&
-        this.x > coinPool[i].x - this.size
+        this.size * this.size * 4 >=
+        (this.x - coinPool[i].x) * (this.x - coinPool[i].x) +
+          (this.y - coinPool[i].y) * (this.y - coinPool[i].y)
       ) {
-        this.forceY *= this.elasticity;
-        this.forceX *= this.elasticity;
+        console.log("colide");
       }
     }
   }
