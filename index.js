@@ -9,7 +9,7 @@ const mouse = {
   y: null,
 };
 const gravity = 9.81;
-const resistance = 0.02;
+const resistance = 0.3;
 var cur = 0;
 
 //add events
@@ -37,6 +37,7 @@ class Coin {
     this.m = 15;
     this.size = 50;
     this.color = "blue";
+    this.speed = 0.02;
   }
   draw() {
     ctx.fillStyle = this.color;
@@ -45,7 +46,7 @@ class Coin {
     ctx.fill();
   }
   freefall(dt) {
-    this.y += dt * resistance * gravity;
+    this.y += dt * this.speed * gravity;
   }
   rigidbody(dt) {
     if (this.y > canvas.height - this.size) {
@@ -71,8 +72,8 @@ class Coin {
   update(dt) {
     this.freefall(dt);
     this.rigidbody(dt);
-    this.y += dt * resistance * this.forceY;
-    this.x += dt * resistance * this.forceX;
+    this.y += dt * this.speed * this.forceY;
+    this.x += dt * this.speed * this.forceX;
     if (this.forceY < gravity) {
       this.forceY += resistance * dt;
     }
