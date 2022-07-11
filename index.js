@@ -8,8 +8,7 @@ const mouse = {
   x: null,
   y: null,
 };
-const gravity = 9.81;
-const resistance = 0.3;
+const gravity = 0.5;
 var cur = 0;
 
 //add events
@@ -31,13 +30,14 @@ class Coin {
     this.id = id;
     this.x = mouse.x;
     this.y = mouse.y;
-    this.elasticity = -1;
+    this.elasticity = 0.05;
+    this.resistance = 0.001;
     this.forceX = 0;
     this.forceY = gravity;
     this.m = 15;
     this.size = 50;
     this.color = "blue";
-    this.speed = 0.02;
+    this.speed = 0.1;
   }
   draw() {
     ctx.fillStyle = this.color;
@@ -46,7 +46,7 @@ class Coin {
     ctx.fill();
   }
   freefall(dt) {
-    this.y += dt * this.speed * gravity;
+    this.y += dt * gravity;
   }
   rigidbody(dt) {
     if (this.y > canvas.height - this.size) {
@@ -64,28 +64,35 @@ class Coin {
         (this.x - coinPool[i].x) * (this.x - coinPool[i].x) +
           (this.y - coinPool[i].y) * (this.y - coinPool[i].y)
       ) {
-        this.forceX = this.x - coinPool[i].x;
-        this.forceY = this.y - coinPool[i].y;
+        this.forceX = (this.x - coinPool[i].x) * this.elasticity;
+        this.forceY = (this.y - coinPool[i].y) * this.elasticity;
+        console.log("force", this.forceX);
       }
     }
   }
   update(dt) {
     this.freefall(dt);
     this.rigidbody(dt);
-    this.y += dt * this.speed * this.forceY;
-    this.x += dt * this.speed * this.forceX;
+    this.y += dt * this.forceY * this.speed;
+    this.x += dt * this.forceX * this.speed;
+
     if (this.forceY < gravity) {
-      this.forceY += resistance * dt;
+      this.forceY += this.resistance * dt;
     }
     if (this.forceX > 0) {
-      this.forceX -= resistance * dt;
+      this.forceX -= this.resistance * dt;
     }
     if (this.forceX < 0) {
-      this.forceX += resistance * dt;
+      this.forceX += this.resistance * dt;
     }
-    if (this.forceX < 0.1 && this.forceX > -0.1) {
+
+    if (this.forceX < 0.2 && this.forceX > -0.2) {
       this.forceX = 0;
     }
+    if (this.forceY < 0.2 && this.forceY > -0.2) {
+      this.forceY = 0;
+    }
+
     this.draw();
   }
 }
