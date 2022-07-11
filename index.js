@@ -1,5 +1,6 @@
 //init
 const canvas = document.getElementById("canvas1");
+const img = document.getElementById("coinImg");
 const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
@@ -40,10 +41,7 @@ class Coin {
     this.speed = 0.1;
   }
   draw() {
-    ctx.fillStyle = this.color;
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-    ctx.fill();
+    ctx.drawImage(img, this.x, this.y, this.size, this.size);
   }
   freefall(dt) {
     this.y += dt * gravity;
